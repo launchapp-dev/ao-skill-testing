@@ -1,0 +1,25 @@
+phases:
+  ao.testing-implement:
+    mode: agent
+    agent: ao.testing-agent
+    directive: "Implement the task. Read requirements, write code, commit."
+    capabilities:
+      mutates_state: true
+
+workflows:
+  - id: ao.testing/standard
+    name: "ao-skill-testing Standard"
+    description: "Plan → Implement → Push → PR"
+    phases:
+      - ao.testing-implement
+      - push-branch
+      - create-pr
+      - pr-review
+
+  - id: ao.testing/quick-fix
+    name: "ao-skill-testing Quick Fix"
+    description: "Implement → Push → PR"
+    phases:
+      - ao.testing-implement
+      - push-branch
+      - create-pr

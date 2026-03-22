@@ -1,0 +1,28 @@
+schema = "ao.pack.v1"
+id = "ao.testing"
+version = "0.1.0"
+kind = "skill-pack"
+title = "ao-skill-testing"
+description = "Generate comprehensive tests (vitest, jest, pytest) from source code analysis"
+
+[ownership]
+mode = "community"
+author = "launchapp-dev"
+repo = "https://github.com/launchapp-dev/ao-skill-testing"
+
+[compatibility]
+ao_core = ">=0.2.0"
+workflow_schema = "v2"
+
+[workflows]
+root = "workflows"
+exports = [
+  "ao.testing/standard",
+  "ao.testing/quick-fix",
+]
+
+[runtime]
+agent_overlay = "runtime/agents.yaml"
+
+[permissions]
+tools = ["ao", "github"]

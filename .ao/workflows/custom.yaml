@@ -1,10 +1,4 @@
-tools_allowlist:
-  - git
-  - gh
-  - node
-  - npx
-  - npm
-  - pnpm
+tools_allowlist: [git, gh, node, npx, npm, pnpm]
 
 mcp_servers:
   context7:
@@ -19,51 +13,64 @@ agents:
     model: kimi-code/kimi-for-coding
     tool: oai-runner
 
-  implementer:
+  skill-builder:
     system_prompt: |
-      You implement code for ao-skill-testing. Build automated test generation skill pack.
-      Write clean TypeScript. Follow existing patterns.
-      Commit with descriptive messages. Do not add yourself as author.
+      You build AO skill packs. A skill pack is a set of agents, phases,
+      and workflows that can be installed into any AO project.
+
+      SKILL PACK STRUCTURE:
+      - pack.toml: manifest (id, version, kind, exports)
+      - runtime/agents.yaml: agent definitions (model, system_prompt, capabilities)
+      - workflows/skill-pack.yaml: phase + workflow definitions
+      - skills/: individual skill files
+      - docs/: documentation
+
+      YOUR JOB:
+      1. Read the task description
+      2. Implement the skill/agent/workflow described
+      3. Follow the pack.toml schema for any manifest changes
+      4. Write agent system_prompts that are detailed and actionable
+      5. Test that the YAML is valid
+      6. Commit changes
+
+      AGENT PROMPT BEST PRACTICES:
+      - Start with the agent's role and expertise
+      - List specific capabilities and tools available
+      - Define a clear step-by-step workflow
+      - Include quality standards and rules
+      - Be specific about what the agent should and shouldn't do
+      Do not add yourself as author or co-author.
     model: kimi-code/kimi-for-coding
     tool: oai-runner
     mcp_servers: ["ao", "context7"]
 
   reviewer:
     system_prompt: |
-      You review PRs for ao-skill-testing.
-      Check: code quality, TypeScript types, missing exports, security.
-      Use merge_pull_request MCP tool to merge good PRs.
-      Close conflicting PRs after 3 failed rebases.
+      Review PRs for this skill pack. Check:
+      - pack.toml is valid and exports match
+      - Agent system_prompts are detailed and actionable
+      - Workflow phases reference correct agents
+      - YAML syntax is valid
+      Use merge_pull_request MCP to merge good PRs.
     model: minimax/MiniMax-M2.7
     tool: oai-runner
     mcp_servers: ["ao", "github"]
 
   planner:
     system_prompt: |
-      You plan work for ao-skill-testing. Create AO agents that analyze code and generate vitest/jest tests automatically.
-      Check ao.queue.list — max 3 items. Check open PRs — pause at 5+.
-      Read VISION.md and requirements before creating tasks.
+      Plan work for this skill pack. Read VISION.md and requirements.
+      Queue max 3 tasks. Pause at 5+ open PRs.
     model: minimax/MiniMax-M2.7
     tool: oai-runner
     mcp_servers: ["ao"]
 
-  product-owner:
-    system_prompt: |
-      You are the Product Owner for ao-skill-testing. Create AO agents that analyze code and generate vitest/jest tests automatically.
-      Read VISION.md every run. Create requirements and tasks.
-      NEVER remove features. Only ADD and IMPROVE.
-    model: minimax/MiniMax-M2.7
-    tool: oai-runner
-    mcp_servers: ["ao", "github"]
-
 phases:
-  implementation:
+  skill-implement:
     mode: agent
-    agent: implementer
-    directive: "Implement the task. Write code, commit."
+    agent: skill-builder
+    directive: "Build the skill pack component described in the task."
     capabilities:
       mutates_state: true
-
   push-branch:
     mode: command
     command:
@@ -71,7 +78,6 @@ phases:
       args: ["push", "-u", "origin", "HEAD"]
       cwd_mode: task_root
       timeout_secs: 60
-
   create-pr:
     mode: command
     command:
@@ -79,31 +85,20 @@ phases:
       args: ["pr", "create", "--fill", "--base", "main"]
       cwd_mode: task_root
       timeout_secs: 60
-
   pr-review:
     mode: agent
     agent: reviewer
-    directive: "Review this PR. Merge if good, request changes if not."
-
+    directive: "Review and merge this PR."
   pr-review-sweep:
     mode: agent
     agent: reviewer
     directive: "Pick ONE open PR. Merge, close, or queue rebase."
     capabilities:
       mutates_state: true
-
   work-planning:
     mode: agent
     agent: planner
     directive: "Check tasks and queue. Enqueue ready work."
-
-  product-review:
-    mode: agent
-    agent: product-owner
-    directive: "Review progress. Create tasks for gaps."
-    capabilities:
-      mutates_state: true
-
   sync-main:
     mode: command
     command:
@@ -113,23 +108,15 @@ phases:
 
 workflows:
   - id: standard
-    phases: [implementation, push-branch, create-pr, pr-review]
-
+    phases: [skill-implement, push-branch, create-pr, pr-review]
   - id: scaffold
-    phases: [implementation, push-branch, create-pr, pr-review]
-
+    phases: [skill-implement, push-branch, create-pr, pr-review]
   - id: quick-fix
-    phases: [implementation, push-branch, create-pr, pr-review]
-
+    phases: [skill-implement, push-branch, create-pr, pr-review]
   - id: work-planner
     phases: [work-planning]
-
   - id: pr-reviewer
     phases: [pr-review-sweep]
-
-  - id: product-review
-    phases: [product-review]
-
   - id: sync-main
     phases: [sync-main]
 
@@ -141,10 +128,6 @@ schedules:
   - id: pr-reviewer
     cron: "*/3 * * * *"
     workflow_ref: pr-reviewer
-    enabled: true
-  - id: product-review
-    cron: "*/10 * * * *"
-    workflow_ref: product-review
     enabled: true
   - id: sync-main
     cron: "*/5 * * * *"
