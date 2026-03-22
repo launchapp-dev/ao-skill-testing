@@ -3,12 +3,26 @@ import { SourceAnalyzer } from './source-analyzer.js';
 import { TestGenerator } from './test-generator.js';
 import { JestTestGenerator } from './jest-test-generator.js';
 import { PytestTestGenerator, analyzePythonCode } from './pytest-test-generator.js';
+import {
+  EdgeCaseTestGenerator,
+  EdgeCaseGenerator,
+  ErrorConditionDetector,
+  type EdgeCaseTestGeneratorOptions,
+  type GeneratedEdgeCaseTests,
+  generateAsyncErrorScenarios,
+} from './edge-cases/index.js';
 
 export { SourceAnalyzer } from './source-analyzer.js';
 export { TestGenerator } from './test-generator.js';
 export { JestTestGenerator } from './jest-test-generator.js';
 export { PytestTestGenerator, analyzePythonCode } from './pytest-test-generator.js';
 export type { PytestGenerationOptions } from './pytest-test-generator.js';
+export { EdgeCaseGenerator } from './edge-cases/index.js';
+export { ErrorConditionDetector } from './edge-cases/index.js';
+export { EdgeCaseTestGenerator } from './edge-cases/index.js';
+export type { EdgeCaseTestGeneratorOptions, GeneratedEdgeCaseTests } from './edge-cases/index.js';
+export { generateAsyncErrorScenarios } from './edge-cases/index.js';
+export type { EdgeCase, EdgeCaseTestCase, AsyncErrorScenario, AssertionPattern } from './edge-cases/index.js';
 export * from './types.js';
 
 /**

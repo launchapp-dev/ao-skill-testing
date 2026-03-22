@@ -69,6 +69,16 @@ phases:
       generates_code: false
       code_analysis: true
 
+  ao.edge-case-test-implement:
+    mode: agent
+    agent: ao.edge-case-test-generator
+    directive: "Generate edge case and error scenario tests. Detect error conditions in source code, generate tests for null/undefined, empty arrays/objects, boundary values, invalid types, and async errors. Ensure tests have meaningful assertions beyond simple equality checks."
+    capabilities:
+      mutates_state: true
+      generates_code: true
+      runs_tests: true
+
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -147,3 +157,12 @@ workflows:
     phases:
       - coverage-analysis
       - ao.coverage-improvement-implement
+
+  - id: ao.testing/edge-cases
+    name: "Edge Case Test Generation"
+    description: "Generate comprehensive edge case and error scenario tests with meaningful assertions"
+    phases:
+      - ao.edge-case-test-implement
+      - push-branch
+      - create-pr
+      - pr-review
