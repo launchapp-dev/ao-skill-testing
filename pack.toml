@@ -3,7 +3,7 @@ id = "ao.testing"
 version = "0.1.0"
 kind = "skill-pack"
 title = "ao-skill-testing"
-description = "Generate comprehensive tests (vitest, jest, pytest) from source code analysis"
+description = "Generate comprehensive tests (vitest, jest, pytest, integration) from source code analysis"
 
 [ownership]
 mode = "community"
@@ -22,6 +22,7 @@ exports = [
   "ao.testing/jest-generate",
   "ao.testing/pytest-generate",
   "ao.testing/e2e-plan",
+  "ao.testing/integration-generate",
 ]
 
 [runtime]
