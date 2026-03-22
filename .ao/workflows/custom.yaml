@@ -108,11 +108,23 @@ phases:
 
 workflows:
   - id: standard
-    phases: [skill-implement, push-branch, create-pr, pr-review]
+    phases:
+      - skill-implement
+      - push-branch
+      - create-pr
+      - pr-review
   - id: scaffold
-    phases: [skill-implement, push-branch, create-pr, pr-review]
+    phases:
+      - skill-implement
+      - push-branch
+      - create-pr
+      - pr-review
   - id: quick-fix
-    phases: [skill-implement, push-branch, create-pr, pr-review]
+    phases:
+      - skill-implement
+      - push-branch
+      - create-pr
+      - pr-review
   - id: work-planner
     phases: [work-planning]
   - id: pr-reviewer
