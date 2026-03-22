@@ -19,6 +19,7 @@ root = "workflows"
 exports = [
   "ao.testing/standard",
   "ao.testing/quick-fix",
+  "ao.testing/jest-generate",
 ]
 
 [runtime]

@@ -1,4 +1,4 @@
-import type { AnalyzedModule, TestGenerationOptions, TestGenerationResult } from './types.js';
+import type { AnalyzedModule, AnalyzedFunction, AnalyzedClass, TestGenerationOptions, GeneratedTest, TestGenerationResult } from './types.js';
 /**
  * Generates vitest tests from analyzed source code
  */
@@ -12,62 +12,68 @@ export declare class TestGenerator {
     /**
      * Generate tests for functions
      */
-    private generateFunctionTests;
+    protected generateFunctionTests(analysis: AnalyzedModule): GeneratedTest;
     /**
      * Generate tests for a single function
      */
-    private generateTestsForFunction;
+    protected generateTestsForFunction(func: AnalyzedFunction): {
+        code: string;
+        testCases: GeneratedTest['testCases'];
+    };
     /**
      * Generate tests for a class
      */
-    private generateClassTests;
+    protected generateClassTests(analysis: AnalyzedModule, cls: AnalyzedClass): GeneratedTest;
     /**
      * Generate tests for a class method
      */
-    private generateMethodTests;
+    protected generateMethodTests(cls: AnalyzedClass, method: AnalyzedFunction): {
+        code: string;
+        testCases: GeneratedTest['testCases'];
+    };
     /**
      * Generate import statements
      */
-    private generateImports;
+    protected generateImports(analysis: AnalyzedModule): string;
     /**
      * Generate sample arguments for a function
      */
-    private generateSampleArguments;
+    protected generateSampleArguments(func: AnalyzedFunction): string;
     /**
      * Generate sample constructor arguments
      */
-    private generateSampleConstructorArgs;
+    protected generateSampleConstructorArgs(cls: AnalyzedClass): string;
     /**
      * Generate edge case arguments
      */
-    private generateEdgeCaseArguments;
+    protected generateEdgeCaseArguments(func: AnalyzedFunction, edgeParam: string): string;
     /**
      * Generate null/undefined arguments
      */
-    private generateNullArguments;
+    protected generateNullArguments(func: AnalyzedFunction): string;
     /**
      * Generate a sample value for a type
      */
-    private generateSampleValue;
+    protected generateSampleValue(type?: string): string;
     /**
      * Generate an edge case value for a type
      */
-    private generateEdgeCaseValue;
+    protected generateEdgeCaseValue(type?: string): string;
     /**
      * Infer JavaScript type from TypeScript type
      */
-    private inferTypeFromTypeScript;
+    protected inferTypeFromTypeScript(tsType: string): string;
     /**
      * Get test file path
      */
-    private getTestPath;
+    protected getTestPath(sourcePath: string, suffix: string): string;
     /**
      * Get import path from source file path
      */
-    private getImportPath;
+    protected getImportPath(sourcePath: string): string;
     /**
      * Get module name from file path
      */
-    private getModuleName;
+    protected getModuleName(filePath: string): string;
 }
 //# sourceMappingURL=test-generator.d.ts.map

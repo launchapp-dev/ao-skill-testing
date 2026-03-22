@@ -58,7 +58,7 @@ export class TestGenerator {
   /**
    * Generate tests for functions
    */
-  private generateFunctionTests(analysis: AnalyzedModule): GeneratedTest {
+  protected generateFunctionTests(analysis: AnalyzedModule): GeneratedTest {
     const testPath = this.getTestPath(analysis.filePath, 'functions');
     const testCases: GeneratedTest['testCases'] = [];
     const lines: string[] = [];
@@ -93,7 +93,7 @@ export class TestGenerator {
   /**
    * Generate tests for a single function
    */
-  private generateTestsForFunction(func: AnalyzedFunction): { code: string; testCases: GeneratedTest['testCases'] } {
+  protected generateTestsForFunction(func: AnalyzedFunction): { code: string; testCases: GeneratedTest['testCases'] } {
     const testCases: GeneratedTest['testCases'] = [];
     const lines: string[] = [];
 
@@ -181,7 +181,7 @@ export class TestGenerator {
   /**
    * Generate tests for a class
    */
-  private generateClassTests(analysis: AnalyzedModule, cls: AnalyzedClass): GeneratedTest {
+  protected generateClassTests(analysis: AnalyzedModule, cls: AnalyzedClass): GeneratedTest {
     const testPath = this.getTestPath(analysis.filePath, cls.name);
     const testCases: GeneratedTest['testCases'] = [];
     const lines: string[] = [];
@@ -241,7 +241,7 @@ export class TestGenerator {
   /**
    * Generate tests for a class method
    */
-  private generateMethodTests(cls: AnalyzedClass, method: AnalyzedFunction): { code: string; testCases: GeneratedTest['testCases'] } {
+  protected generateMethodTests(cls: AnalyzedClass, method: AnalyzedFunction): { code: string; testCases: GeneratedTest['testCases'] } {
     const testCases: GeneratedTest['testCases'] = [];
     const lines: string[] = [];
 
@@ -284,7 +284,7 @@ export class TestGenerator {
   /**
    * Generate import statements
    */
-  private generateImports(analysis: AnalyzedModule): string {
+  protected generateImports(analysis: AnalyzedModule): string {
     const lines: string[] = [];
     const framework = this.options.framework;
     
@@ -309,7 +309,7 @@ export class TestGenerator {
   /**
    * Generate sample arguments for a function
    */
-  private generateSampleArguments(func: AnalyzedFunction): string {
+  protected generateSampleArguments(func: AnalyzedFunction): string {
     return func.parameters.map(param => {
       if (param.defaultValue) return param.defaultValue;
       return this.generateSampleValue(param.type);
@@ -319,7 +319,7 @@ export class TestGenerator {
   /**
    * Generate sample constructor arguments
    */
-  private generateSampleConstructorArgs(cls: AnalyzedClass): string {
+  protected generateSampleConstructorArgs(cls: AnalyzedClass): string {
     return cls.constructorParams.map(param => {
       return this.generateSampleValue(param.type);
     }).join(', ');
@@ -328,7 +328,7 @@ export class TestGenerator {
   /**
    * Generate edge case arguments
    */
-  private generateEdgeCaseArguments(func: AnalyzedFunction, edgeParam: string): string {
+  protected generateEdgeCaseArguments(func: AnalyzedFunction, edgeParam: string): string {
     return func.parameters.map(param => {
       if (param.name === edgeParam) {
         return this.generateEdgeCaseValue(param.type);
@@ -340,14 +340,14 @@ export class TestGenerator {
   /**
    * Generate null/undefined arguments
    */
-  private generateNullArguments(func: AnalyzedFunction): string {
+  protected generateNullArguments(func: AnalyzedFunction): string {
     return func.parameters.map(() => 'null').join(', ');
   }
 
   /**
    * Generate a sample value for a type
    */
-  private generateSampleValue(type?: string): string {
+  protected generateSampleValue(type?: string): string {
     if (!type) return 'undefined';
     
     const typeLower = type.toLowerCase();
@@ -369,7 +369,7 @@ export class TestGenerator {
   /**
    * Generate an edge case value for a type
    */
-  private generateEdgeCaseValue(type?: string): string {
+  protected generateEdgeCaseValue(type?: string): string {
     if (!type) return 'undefined';
     
     const typeLower = type.toLowerCase();
@@ -386,7 +386,7 @@ export class TestGenerator {
   /**
    * Infer JavaScript type from TypeScript type
    */
-  private inferTypeFromTypeScript(tsType: string): string {
+  protected inferTypeFromTypeScript(tsType: string): string {
     const typeLower = tsType.toLowerCase();
     
     if (typeLower.includes('string')) return 'string';
@@ -402,7 +402,7 @@ export class TestGenerator {
   /**
    * Get test file path
    */
-  private getTestPath(sourcePath: string, suffix: string): string {
+  protected getTestPath(sourcePath: string, suffix: string): string {
     const dir = this.options.testDirectory || 'tests';
     const baseName = sourcePath.split('/').pop()?.replace(/\.(ts|js)$/, '') || 'test';
     const testSuffix = this.options.testSuffix || '.test';
@@ -412,7 +412,7 @@ export class TestGenerator {
   /**
    * Get import path from source file path
    */
-  private getImportPath(sourcePath: string): string {
+  protected getImportPath(sourcePath: string): string {
     // Remove file extension and convert to relative import
     return sourcePath.replace(/\.(ts|js)$/, '');
   }
@@ -420,7 +420,7 @@ export class TestGenerator {
   /**
    * Get module name from file path
    */
-  private getModuleName(filePath: string): string {
+  protected getModuleName(filePath: string): string {
     return filePath.split('/').pop()?.replace(/\.(ts|js)$/, '') || 'module';
   }
 }
