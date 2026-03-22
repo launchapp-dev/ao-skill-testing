@@ -15,6 +15,15 @@ phases:
       generates_code: true
       runs_tests: true
 
+  ao.pytest-test-implement:
+    mode: agent
+    agent: ao.pytest-test-generator
+    directive: "Generate comprehensive pytest test files with fixtures, parametrize, and exception testing. Parse Python source files using ast module, create test files in tests/ directory, configure pytest with conftest.py, and verify tests pass."
+    capabilities:
+      mutates_state: true
+      generates_code: true
+      runs_tests: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -38,6 +47,15 @@ workflows:
     description: "Generate comprehensive Jest test suite with mocking, spies, and configuration"
     phases:
       - ao.jest-test-implement
+      - push-branch
+      - create-pr
+      - pr-review
+
+  - id: ao.testing/pytest-generate
+    name: "Pytest Test Generation"
+    description: "Generate comprehensive pytest test suite with fixtures, parametrize, and exception testing"
+    phases:
+      - ao.pytest-test-implement
       - push-branch
       - create-pr
       - pr-review
