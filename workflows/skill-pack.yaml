@@ -51,6 +51,15 @@ phases:
       runs_tests: true
       code_analysis: true
 
+  ao.edge-cases-merge-implement:
+    mode: agent
+    agent: ao.edge-cases-merge-agent
+    directive: "Merge edge-cases module from origin/ao/task-013 branch. Extract files (detector.ts, generator.ts, types.ts, edge-cases.test.ts, index.ts), update src/index.ts to export edge-cases, preserve src/pytest-test-generator.ts, run tests to verify, and commit."
+    capabilities:
+      mutates_state: true
+      git_operations: true
+      conflict_resolution: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -110,6 +119,15 @@ workflows:
     description: "Analyze vitest coverage reports, identify untested code paths, and generate targeted tests to improve coverage"
     phases:
       - ao.coverage-improvement-implement
+      - push-branch
+      - create-pr
+      - pr-review
+
+  - id: ao.testing/edge-cases-merge
+    name: "Edge Cases Module Merge"
+    description: "Merge edge-cases module from origin/ao/task-013 branch while preserving existing code like pytest-test-generator.ts"
+    phases:
+      - ao.edge-cases-merge-implement
       - push-branch
       - create-pr
       - pr-review
