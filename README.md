@@ -10,6 +10,7 @@ The ao-skill-testing pack provides a complete test generation pipeline with mult
 |-------|-----------|-------------|
 | `ao.testing-agent` | Vitest | General-purpose test generation with TypeScript analysis |
 | `ao.jest-test-generator` | Jest | Advanced Jest test generation with mocking, spies, and matchers |
+| `ao.e2e-test-planner` | Markdown | E2E test planning from source code analysis |
 
 ### Supported Test Types
 
@@ -17,7 +18,7 @@ The ao-skill-testing pack provides a complete test generation pipeline with mult
 - **Edge Case Tests**: Boundary conditions, null/undefined handling, empty values
 - **Type Check Tests**: TypeScript type validation tests
 - **Integration Tests**: Module dependency testing (planned)
-- **E2E Tests**: End-to-end test generation (planned)
+- **E2E Tests**: End-to-end test plan generation with user flows and scenarios
 
 ## Quick Start
 
@@ -170,12 +171,19 @@ ao workflow run --workflow ao.testing/quick-fix --task TASK-001
 ao workflow run --workflow ao.testing/jest-generate --task TASK-001
 ```
 
+#### E2E Test Planning Workflow
+```bash
+# E2E test plan generation from source code analysis
+ao workflow run --workflow ao.testing/e2e-plan --task TASK-001
+```
+
 ### Workflow Phases
 
 | Phase | Agent | Description |
 |-------|-------|-------------|
 | `ao.testing-implement` | `ao.testing-agent` | Analyze source and generate tests |
 | `ao.jest-test-implement` | `ao.jest-test-generator` | Generate Jest-specific tests |
+| `ao.e2e-test-plan` | `ao.e2e-test-planner` | Generate E2E test plans in markdown |
 | `push-branch` | System | Push changes to branch |
 | `create-pr` | System | Create pull request |
 | `pr-review` | System | Review pull request |
