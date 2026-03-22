@@ -21,6 +21,7 @@ exports = [
   "ao.testing/quick-fix",
   "ao.testing/jest-generate",
   "ao.testing/pytest-generate",
+  "ao.testing/e2e-plan",
 ]
 
 [runtime]
