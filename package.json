@@ -1,0 +1,40 @@
+{
+  "name": "ao-skill-testing",
+  "version": "0.1.0",
+  "description": "AO skill pack for automated test generation",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./agents": "./dist/agents/index.js",
+    "./agents/vitest": "./dist/agents/vitest.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "ao",
+    "agent",
+    "testing",
+    "vitest",
+    "test-generation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "dependencies": {
+    "ts-morph": "^21.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
