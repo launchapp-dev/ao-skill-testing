@@ -41,6 +41,16 @@ phases:
       generates_code: true
       runs_tests: true
 
+  ao.coverage-improvement-implement:
+    mode: agent
+    agent: ao.coverage-improvement-agent
+    directive: "Parse vitest coverage reports (JSON/LCOV/HTML format), identify under-tested modules and uncovered code paths. Generate targeted test cases for uncovered lines, branches, and functions. Support boundary condition edge case generation. Read coverage report from coverage/coverage-final.json or coverage/lcov.info, analyze source files, generate coverage improvement tests in tests/coverage/ directory, run tests to verify they pass, and re-run coverage to verify improvement."
+    capabilities:
+      mutates_state: true
+      generates_code: true
+      runs_tests: true
+      code_analysis: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -91,6 +101,15 @@ workflows:
     description: "Generate integration tests for TypeScript projects by analyzing cross-package dependencies and public API boundaries"
     phases:
       - ao.integration-test-implement
+      - push-branch
+      - create-pr
+      - pr-review
+
+  - id: ao.testing/coverage-generate
+    name: "Coverage Improvement"
+    description: "Analyze vitest coverage reports, identify untested code paths, and generate targeted tests to improve coverage"
+    phases:
+      - ao.coverage-improvement-implement
       - push-branch
       - create-pr
       - pr-review
