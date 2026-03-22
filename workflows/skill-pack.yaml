@@ -6,6 +6,15 @@ phases:
     capabilities:
       mutates_state: true
 
+  ao.jest-test-implement:
+    mode: agent
+    agent: ao.jest-test-generator
+    directive: "Generate comprehensive Jest test files with mocking, spies, and matchers. Analyze source code, create test files, configure Jest, and verify tests pass."
+    capabilities:
+      mutates_state: true
+      generates_code: true
+      runs_tests: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -23,3 +32,12 @@ workflows:
       - ao.testing-implement
       - push-branch
       - create-pr
+
+  - id: ao.testing/jest-generate
+    name: "Jest Test Generation"
+    description: "Generate comprehensive Jest test suite with mocking, spies, and configuration"
+    phases:
+      - ao.jest-test-implement
+      - push-branch
+      - create-pr
+      - pr-review

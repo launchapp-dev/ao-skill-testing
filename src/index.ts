@@ -1,9 +1,12 @@
 import type { SourceFile, TestGenerationOptions, TestGenerationResult } from './types.js';
 import { SourceAnalyzer } from './source-analyzer.js';
 import { TestGenerator } from './test-generator.js';
+import { JestTestGenerator } from './jest-test-generator.js';
 
 export { SourceAnalyzer } from './source-analyzer.js';
 export { TestGenerator } from './test-generator.js';
+export { JestTestGenerator } from './jest-test-generator.js';
+export type { JestTestOptions, JestConfigOptions } from './jest-test-generator.js';
 export * from './types.js';
 
 /**

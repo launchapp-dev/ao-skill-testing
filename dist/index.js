@@ -2,6 +2,7 @@ import { SourceAnalyzer } from './source-analyzer.js';
 import { TestGenerator } from './test-generator.js';
 export { SourceAnalyzer } from './source-analyzer.js';
 export { TestGenerator } from './test-generator.js';
+export { JestTestGenerator } from './jest-test-generator.js';
 export * from './types.js';
 /**
  * Main API for generating tests from source code
