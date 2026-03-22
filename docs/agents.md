@@ -9,6 +9,7 @@ The ao-skill-testing skill pack includes multiple agents, each specialized for d
 | `ao.testing-agent` | Vitest | General test generation | implementation, planning |
 | `ao.jest-test-generator` | Jest | Advanced Jest features | implementation, planning, testing |
 | `ao.pytest-test-generator` | pytest | Python pytest testing | implementation, planning, testing |
+| `ao.e2e-test-planner` | Markdown | E2E test planning | planning |
 
 ## ao.testing-agent
 
@@ -325,6 +326,74 @@ Choose your agent based on your needs:
 | Python AST parsing | `ao.pytest-test-generator` |
 | pytest fixtures/fixtures | `ao.pytest-test-generator` |
 | Exception testing | `ao.pytest-test-generator` |
+| E2E test planning | `ao.e2e-test-planner` |
+
+## ao.e2e-test-planner
+
+E2E test planning agent that analyzes application source code to generate comprehensive test plans.
+
+### Configuration
+
+```yaml
+# runtime/agents.yaml
+agents:
+  ao.e2e-test-planner:
+    model: claude-3-5-sonnet-20241022
+    tool: claude
+    mcp_servers: ["ao", "context7"]
+```
+
+### System Prompt Summary
+
+The E2E Test Planner agent covers:
+
+1. **Source Code Analysis**
+   - User flow identification
+   - Event handler detection
+   - Business logic mapping
+
+2. **Test Plan Structure**
+   - Happy path scenarios
+   - Error recovery cases
+   - Edge case coverage
+
+### What It Analyzes
+
+| Category | Examples |
+|----------|----------|
+| User Flows | Navigation, authentication, data submission |
+| Event Handlers | Click, change, submit, keyboard events |
+| Business Logic | Calculations, validations, state changes |
+| API Endpoints | REST endpoints, request/response patterns |
+
+### Test Plan Categories
+
+**Happy Path Tests**
+- Main user flows working correctly
+- Standard input/output scenarios
+- Typical user behavior sequences
+
+**Error Recovery Tests**
+- Invalid input handling
+- Network failures
+- Authentication/authorization failures
+- Service unavailable scenarios
+
+**Edge Case Tests**
+- Empty/null/undefined values
+- Maximum length inputs
+- Special characters and unicode
+- Concurrent operations
+
+### Output Format
+
+Generates `e2e-test-plan.md` with:
+- Application overview and scope
+- User flow definitions with steps
+- Event handler documentation
+- Business logic scenarios
+- API endpoint documentation
+- Coverage summary matrix
 
 ## Customizing Agents
 

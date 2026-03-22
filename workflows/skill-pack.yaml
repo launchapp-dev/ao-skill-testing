@@ -24,6 +24,14 @@ phases:
       generates_code: true
       runs_tests: true
 
+  ao.e2e-test-plan:
+    mode: agent
+    agent: ao.e2e-test-planner
+    directive: "Analyze application source code to identify user flows, event handlers, and business logic. Generate comprehensive E2E test plans in markdown format covering happy paths, error recovery, and edge cases. Output to e2e-test-plan.md."
+    capabilities:
+      mutates_state: true
+      generates_code: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -56,6 +64,15 @@ workflows:
     description: "Generate comprehensive pytest test suite with fixtures, parametrize, and exception testing"
     phases:
       - ao.pytest-test-implement
+      - push-branch
+      - create-pr
+      - pr-review
+
+  - id: ao.testing/e2e-plan
+    name: "E2E Test Planning"
+    description: "Analyze application source code and generate comprehensive E2E test plans in markdown format covering happy paths, error recovery, and edge cases"
+    phases:
+      - ao.e2e-test-plan
       - push-branch
       - create-pr
       - pr-review
