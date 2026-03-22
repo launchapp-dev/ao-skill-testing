@@ -24,6 +24,7 @@ exports = [
   "ao.testing/e2e-plan",
   "ao.testing/integration-generate",
   "ao.testing/coverage-generate",
+  "ao.testing/edge-cases-merge",
 ]
 
 [runtime]
