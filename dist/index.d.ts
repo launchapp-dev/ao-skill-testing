@@ -2,7 +2,8 @@ import type { SourceFile, TestGenerationOptions, TestGenerationResult } from './
 export { SourceAnalyzer } from './source-analyzer.js';
 export { TestGenerator } from './test-generator.js';
 export { JestTestGenerator } from './jest-test-generator.js';
-export type { JestTestOptions, JestConfigOptions } from './jest-test-generator.js';
+export { PytestTestGenerator, analyzePythonCode } from './pytest-test-generator.js';
+export type { PytestGenerationOptions } from './pytest-test-generator.js';
 export * from './types.js';
 /**
  * Main API for generating tests from source code
