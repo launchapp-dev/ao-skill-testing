@@ -32,6 +32,15 @@ phases:
       mutates_state: true
       generates_code: true
 
+  ao.integration-test-implement:
+    mode: agent
+    agent: ao.integration-test-generator
+    directive: "Generate integration tests for TypeScript projects by analyzing cross-package dependencies and public API boundaries. Parse multiple TypeScript files, identify cross-package imports and public API boundaries, generate integration tests for public API calls between packages, cover happy path and error scenarios, output valid TypeScript files runnable with vitest."
+    capabilities:
+      mutates_state: true
+      generates_code: true
+      runs_tests: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -73,6 +82,15 @@ workflows:
     description: "Analyze application source code and generate comprehensive E2E test plans in markdown format covering happy paths, error recovery, and edge cases"
     phases:
       - ao.e2e-test-plan
+      - push-branch
+      - create-pr
+      - pr-review
+
+  - id: ao.testing/integration-generate
+    name: "Integration Test Generation"
+    description: "Generate integration tests for TypeScript projects by analyzing cross-package dependencies and public API boundaries"
+    phases:
+      - ao.integration-test-implement
       - push-branch
       - create-pr
       - pr-review
