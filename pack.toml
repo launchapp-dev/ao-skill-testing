@@ -20,6 +20,7 @@ exports = [
   "ao.testing/standard",
   "ao.testing/quick-fix",
   "ao.testing/jest-generate",
+  "ao.testing/pytest-generate",
 ]
 
 [runtime]
