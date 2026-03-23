@@ -60,6 +60,15 @@ phases:
       git_operations: true
       conflict_resolution: true
 
+  coverage-analysis:
+    mode: agent
+    agent: ao.coverage-improvement-agent
+    directive: "Analyze vitest coverage reports, identify under-tested modules and uncovered code paths. Parse coverage/coverage-final.json or coverage/lcov.info to find zero-coverage files, low-coverage files below 80%, uncovered lines, branches, and functions. Prioritize targets by impact and coverage gap size. Reference REQ-006 and REQ-008 acceptance criteria."
+    capabilities:
+      mutates_state: false
+      generates_code: false
+      code_analysis: true
+
 workflows:
   - id: ao.testing/standard
     name: "ao-skill-testing Standard"
@@ -131,3 +140,10 @@ workflows:
       - push-branch
       - create-pr
       - pr-review
+
+  - id: coverage
+    name: "Coverage Workflow"
+    description: "Analyze coverage reports and generate targeted tests to improve coverage. References REQ-006 and REQ-008 acceptance criteria."
+    phases:
+      - coverage-analysis
+      - ao.coverage-improvement-implement
